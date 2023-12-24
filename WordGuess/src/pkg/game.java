@@ -10,28 +10,28 @@ import java.util.Scanner;
 public class game {
 static boolean DEBUG = false;
 static int guess = 3;
+static int score = 0;
+private static Scanner scanner = new Scanner(System.in);
 	public static void main(String[] args) {
 		print_greeter();
 		// Read word list and format data.
 		String[] words = new String[41337];
 		read_file(words);
-		
-		
-		String random_word = words[(int) (Math.random()*41337)];
-		int lenght = random_word.length();
-		
-		// Assign how many word will be shown to player.
-		int counter = generate_shownIndex_counter(lenght);
-		print_the_word(random_word);
-		int[] shown_indexes = generate_shown_indexes(lenght, counter);
-		replaceDuplicates(shown_indexes, lenght);
-		
-		print_shown_indexes(shown_indexes);
-		
-		// Print word word.
-		print_question_word(random_word, shown_indexes);
-		System.out.println();
-		run_game(random_word);
+		boolean run = true;
+		while (run&&guess>0) {			
+			String random_word = words[(int) (Math.random()*41337)];
+			int lenght = random_word.length();
+			// Assign how many word will be shown to player.
+			int counter = generate_shownIndex_counter(lenght);
+			print_the_word(random_word);
+			int[] shown_indexes = generate_shown_indexes(lenght, counter);
+			replaceDuplicates(shown_indexes, lenght);
+			print_shown_indexes(shown_indexes);
+			// Print word word.
+			print_question_word(random_word, shown_indexes);
+			System.out.println();
+			run_game(random_word);
+		}
 	}
 
 
@@ -68,7 +68,6 @@ static int guess = 3;
 
 	private static void run_game(String random_word) {
 		boolean win = false;
-		Scanner scanner = new Scanner(System.in);
 		String user_guess;
 		while (guess>0&&!win) {
 			System.out.print("-->");
@@ -79,12 +78,15 @@ static int guess = 3;
 				guess-=1;
 			}
 		}
-		scanner.close();
 		if(win) {
-			System.out.println("You won!");
+			System.out.println("Correct!");
+			System.out.println("-----------------------");
+			guess = 3;
+			score+=5;
 		}else {
 			System.out.println("You lose!");
 			System.out.printf("The word was '%s'.",random_word);
+			System.out.printf("\nYour score is %d",score);
 		}
 	}
 
@@ -160,4 +162,5 @@ static int guess = 3;
 		}
 		System.out.println("Üstele");
 	}
+	
 }
